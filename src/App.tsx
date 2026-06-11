@@ -161,11 +161,24 @@ function App() {
       if (e.key === 'Escape') {
         setIsContactOpen(false);
         setIsVideoOpen(false);
+        setIsMobileMenuOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Prevent body scroll when menu or modal is open
+  useEffect(() => {
+    if (isMobileMenuOpen || isContactOpen || isVideoOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen, isContactOpen, isVideoOpen]);
 
   // --- HANDLERS ---
   const nextTestimonial = () => {
@@ -214,8 +227,8 @@ function App() {
       </a>
 
       {/* --- FLOATING HEADER / NAVIGATION --- */}
-      <nav className="fixed top-0 left-0 w-full z-40 px-6 py-4 transition-[background-color,backdrop-filter] duration-300">
-        <div className="max-w-7xl mx-auto flex justify-between items-center bg-white/80 dark:bg-black/50 backdrop-blur-xl border border-black/5 rounded-full px-6 md:px-8 py-3 shadow-sm">
+      <nav className="fixed top-0 left-0 w-full z-40 px-4 py-3 sm:px-6 sm:py-4 transition-[background-color,backdrop-filter] duration-300">
+        <div className="max-w-7xl mx-auto flex justify-between items-center bg-white/80 dark:bg-black/50 backdrop-blur-xl border border-black/5 rounded-full px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 shadow-sm">
           
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded-lg">
@@ -255,23 +268,40 @@ function App() {
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden mt-2 mx-auto max-w-lg bg-white/95 backdrop-blur-xl border border-black/5 rounded-2xl p-6 shadow-xl flex flex-col gap-4 text-center text-sm font-semibold uppercase tracking-wider animate-fadeIn">
-            <a onClick={(e) => scrollToSection(e, 'home')} className="py-2.5 border-b border-black/5 hover:text-primary transition-colors" href="#home">Home</a>
-            <a onClick={(e) => scrollToSection(e, 'about')} className="py-2.5 border-b border-black/5 hover:text-primary transition-colors" href="#about">About</a>
-            <a onClick={(e) => scrollToSection(e, 'projects')} className="py-2.5 border-b border-black/5 hover:text-primary transition-colors" href="#projects">Work</a>
-            <a onClick={(e) => scrollToSection(e, 'services')} className="py-2.5 border-b border-black/5 hover:text-primary transition-colors" href="#services">Services</a>
-            <a onClick={(e) => scrollToSection(e, 'journal')} className="py-2.5 border-b border-black/5 hover:text-primary transition-colors" href="#journal">Journal</a>
-            <a onClick={(e) => scrollToSection(e, 'testimonials')} className="py-2.5 border-b border-black/5 hover:text-primary transition-colors" href="#testimonials">Notes</a>
+        {/* Mobile Menu Overlay */}
+        <div 
+          className={`fixed inset-0 z-50 bg-white/98 backdrop-blur-2xl md:hidden transition-all duration-300 overflow-y-auto ${isMobileMenuOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-4 pointer-events-none'}`} 
+          aria-hidden={!isMobileMenuOpen}
+        >
+          <div className="flex flex-col min-h-full justify-between p-6 sm:p-8">
+            <div className="flex justify-between items-center">
+              <span className="font-bold text-xl tracking-tight font-display text-text-main">Velis Studio.</span>
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="p-2.5 hover:bg-black/5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-label="Close menu"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="flex flex-col gap-6 text-3xl font-display font-bold uppercase tracking-tight my-auto text-left pl-4">
+              <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'home'); }} href="#home" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Home</a>
+              <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'about'); }} href="#about" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">About</a>
+              <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'projects'); }} href="#projects" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Work</a>
+              <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'services'); }} href="#services" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Services</a>
+              <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'journal'); }} href="#journal" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Journal</a>
+              <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'testimonials'); }} href="#testimonials" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Notes</a>
+            </div>
+
             <button 
               onClick={() => { setIsMobileMenuOpen(false); setIsContactOpen(true); }}
-              className="mt-2 w-full bg-primary text-white py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-text-main transition-colors duration-300"
+              className="w-full bg-primary text-white py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-text-main transition-colors duration-300"
             >
               Book a call
             </button>
           </div>
-        )}
+        </div>
       </nav>
 
       {/* --- MAIN CONTENT CONTAINER --- */}
@@ -283,19 +313,22 @@ function App() {
           id="home"
           className={`relative pt-36 pb-20 md:pt-48 md:pb-28 overflow-hidden bg-surface-container-low/20 reveal ${headerVisible ? 'active' : ''}`}
         >
-          <div className="max-w-7xl mx-auto px-6 text-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
             
             {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2.5 bg-white px-5 py-2.5 rounded-full mb-8 md:mb-10 border border-black/5 shadow-sm stagger-item transition-all duration-700" style={{ transitionDelay: '100ms' }}>
+            <div className="inline-flex items-center gap-2 bg-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-full mb-8 md:mb-10 border border-black/5 shadow-sm stagger-item transition-all duration-700" style={{ transitionDelay: '100ms' }}>
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface/70">Creative services for modern brands</span>
+              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-on-surface/70">
+                <span className="hidden sm:inline">Creative services for modern brands</span>
+                <span className="sm:hidden">Creative services</span>
+              </span>
             </div>
 
             {/* Main Title */}
-            <h1 className="text-4xl sm:text-6xl md:text-[105px] font-bold tracking-tighter leading-[0.9] mb-10 md:mb-12 font-display uppercase stagger-item transition-all duration-700 text-text-main" style={{ transitionDelay: '200ms' }}>
+            <h1 className="text-3xl min-[400px]:text-4xl sm:text-6xl lg:text-8xl xl:text-[105px] font-bold tracking-tighter leading-[0.9] mb-10 md:mb-12 font-display uppercase stagger-item transition-all duration-700 text-text-main" style={{ transitionDelay: '200ms' }}>
               <span className="inline-block">We</span>{' '}
               <span className="font-serif-display italic font-light text-primary normal-case inline-block">build</span>{' '}
               <span className="inline-block">brands</span> <br className="hidden md:inline" />
@@ -312,14 +345,14 @@ function App() {
               <button 
                 ref={heroCallBtnRef}
                 onClick={() => setIsContactOpen(true)}
-                className="btn-magnetic btn-click-scale w-full sm:w-auto bg-primary text-white px-10 py-4.5 rounded-full font-bold text-xs uppercase tracking-widest hover:shadow-2xl hover:shadow-primary/25 transition-[background-color,transform,box-shadow] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                className="btn-magnetic btn-click-scale w-full sm:w-auto bg-primary text-white px-10 py-4 rounded-full font-bold text-xs uppercase tracking-widest hover:shadow-2xl hover:shadow-primary/25 transition-[background-color,transform,box-shadow] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 Book a call
               </button>
               <a 
                 href="#projects"
                 onClick={(e) => scrollToSection(e, 'projects')}
-                className="btn-click-scale w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-4.5 font-bold text-xs uppercase tracking-widest hover:text-primary transition-colors duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded-full"
+                className="btn-click-scale w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-4 font-bold text-xs uppercase tracking-widest hover:text-primary transition-colors duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded-full"
               >
                 Our process 
                 <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" aria-hidden="true" />
@@ -344,11 +377,11 @@ function App() {
           ref={tickerRef}
           className={`py-12 md:py-16 border-y border-fine bg-white/40 reveal ${tickerVisible ? 'active' : ''}`}
         >
-          <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <h2 className="text-center text-[10px] font-bold uppercase tracking-[0.3em] mb-10 text-on-surface/40">
               The company we keep
             </h2>
-            <div className="flex flex-wrap justify-center md:justify-between items-center gap-8 md:gap-12 grayscale opacity-45 hover:opacity-85 transition-opacity duration-300">
+            <div className="flex flex-wrap justify-center md:justify-between items-center gap-6 sm:gap-8 md:gap-12 grayscale opacity-45 hover:opacity-85 transition-opacity duration-300">
               <div className="flex items-center gap-2 font-display font-bold text-xl md:text-2xl tracking-tighter uppercase select-none">TRACE</div>
               <div className="flex items-center gap-2 font-display font-bold text-xl md:text-2xl tracking-tighter italic uppercase select-none">DENMARK</div>
               <div className="flex items-center gap-2 font-display font-bold text-xl md:text-2xl tracking-tighter uppercase underline decoration-primary decoration-2 underline-offset-4 select-none">PROLINE</div>
@@ -362,12 +395,12 @@ function App() {
         <section 
           ref={projectsRef}
           id="projects" 
-          className={`py-24 md:py-32 max-w-7xl mx-auto px-6 reveal ${projectsVisible ? 'active' : ''}`}
+          className={`py-16 sm:py-24 md:py-32 max-w-7xl mx-auto px-4 sm:px-6 reveal ${projectsVisible ? 'active' : ''}`}
         >
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24">
             <div className="max-w-xl">
               <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4 text-primary">Selected Work</p>
-              <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter leading-[0.95] font-display uppercase text-text-main text-wrap-balance">
+              <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tighter leading-[0.95] font-display uppercase text-text-main text-wrap-balance">
                 Our Latest <br />
                 <span className="font-serif-display italic font-light text-primary normal-case">Creations</span>
               </h2>
@@ -387,9 +420,10 @@ function App() {
 
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-16 md:gap-y-28">
             {PROJECTS.map((project, idx) => (
-              <div 
+              <button 
                 key={project.id} 
-                className={`group cursor-pointer ${idx % 2 === 1 ? 'md:mt-24' : ''}`}
+                type="button"
+                className={`group cursor-pointer text-left w-full block rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 ${idx % 2 === 1 ? 'md:mt-24' : ''}`}
                 onClick={() => setIsContactOpen(true)}
               >
                 {/* Project Image Frame */}
@@ -417,7 +451,7 @@ function App() {
                     {project.num}
                   </span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </section>
@@ -428,14 +462,14 @@ function App() {
         <section 
           ref={aboutRef}
           id="about" 
-          className={`py-24 md:py-32 max-w-7xl mx-auto px-6 reveal ${aboutVisible ? 'active' : ''}`}
+          className={`py-16 sm:py-24 md:py-32 max-w-7xl mx-auto px-4 sm:px-6 reveal ${aboutVisible ? 'active' : ''}`}
         >
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             
             {/* Text & Stats */}
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.3em] mb-6 text-primary">About Velis Studio</p>
-              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-8 font-display uppercase leading-[0.95] text-text-main">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-8 font-display uppercase leading-[0.95] text-text-main">
                 Meaningful <br /> 
                 Experiences <br />
                 <span className="font-serif-display italic font-light text-primary normal-case">By Design.</span>
@@ -445,7 +479,7 @@ function App() {
               </p>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-y-10 gap-x-8">
+              <div className="grid grid-cols-2 gap-y-8 gap-x-6 sm:gap-x-8">
                 <div className="group">
                   <div className="text-4xl md:text-5xl font-display font-bold text-text-main mb-1.5 group-hover:text-primary transition-colors duration-300">172<span className="text-primary">+</span></div>
                   <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-on-surface/50">Digital projects</div>
@@ -466,7 +500,7 @@ function App() {
             </div>
 
             {/* Video Play Container */}
-            <div className="relative bg-surface-container-high rounded-[2rem] md:rounded-[3rem] p-1.5 aspect-square overflow-hidden group shadow-md">
+            <div className="relative bg-surface-container-high rounded-[2rem] md:rounded-[3rem] p-1.5 aspect-video lg:aspect-square overflow-hidden group shadow-md">
               <img 
                 alt="Our Creative Studio Culture" 
                 className="w-full h-full object-cover rounded-[1.8rem] md:rounded-[2.8rem] group-hover:scale-102 transition-transform duration-[1000ms] grayscale group-hover:grayscale-0" 
@@ -490,12 +524,12 @@ function App() {
         <section 
           ref={servicesRef}
           id="services" 
-          className={`py-24 md:py-32 bg-surface-container-low/40 reveal ${servicesVisible ? 'active' : ''}`}
+          className={`py-16 sm:py-24 md:py-32 bg-surface-container-low/40 reveal ${servicesVisible ? 'active' : ''}`}
         >
-          <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center mb-16 md:mb-24">
               <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4 text-primary">Our Expertise</p>
-              <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display uppercase tracking-tighter text-text-main">
+              <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold font-display uppercase tracking-tighter text-text-main">
                 We do it all <span className="font-serif-display italic font-light text-primary normal-case">with ease.</span>
               </h2>
             </div>
@@ -570,13 +604,13 @@ function App() {
         <section 
           ref={testimonialsRef}
           id="testimonials" 
-          className={`py-24 md:py-32 overflow-hidden reveal ${testimonialsVisible ? 'active' : ''}`}
+          className={`py-16 sm:py-24 md:py-32 overflow-hidden reveal ${testimonialsVisible ? 'active' : ''}`}
         >
-          <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-6">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4 text-primary">Testimonials</p>
-                <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display uppercase tracking-tighter leading-none text-text-main">
+                <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold font-display uppercase tracking-tighter leading-none text-text-main">
                   Read the <br />
                   <span className="font-serif-display italic font-light text-primary normal-case">love notes</span>
                 </h2>
@@ -601,48 +635,38 @@ function App() {
               </div>
             </div>
 
-            {/* Testimonials Slider Box */}
-            <div className="relative min-h-[360px] md:min-h-[320px] transition-all duration-500">
-              {TESTIMONIALS.map((testimonial, idx) => {
-                const isActive = idx === testimonialIndex;
-                return (
-                  <div 
-                    key={testimonial.id}
-                    className={`absolute inset-0 w-full transition-all duration-700 ease-in-out ${isActive ? 'opacity-100 translate-x-0 pointer-events-auto scale-100' : 'opacity-0 translate-x-12 pointer-events-none scale-98'}`}
-                    aria-hidden={!isActive}
-                  >
-                    <div className="bg-white p-8 md:p-14 rounded-[2.5rem] border border-fine hover:shadow-xl transition-shadow duration-500 max-w-4xl mx-auto">
-                      
-                      {/* Rating Stars */}
-                      <div className="flex gap-1 mb-8" aria-label={`Rating: ${testimonial.rating} out of 5 stars`}>
-                        {Array.from({ length: testimonial.rating }).map((_, i) => (
-                          <Star key={i} className="w-5 h-5 text-primary fill-primary" />
-                        ))}
-                      </div>
+            {/* Testimonial Box */}
+            <div className="max-w-4xl mx-auto">
+              <div 
+                key={testimonialIndex}
+                className="bg-white p-6 md:p-14 rounded-[2rem] md:rounded-[2.5rem] border border-fine hover:shadow-xl transition-shadow duration-500 animate-fade-in"
+              >
+                {/* Rating Stars */}
+                <div className="flex gap-1 mb-6 md:mb-8" aria-label={`Rating: ${TESTIMONIALS[testimonialIndex].rating} out of 5 stars`}>
+                  {Array.from({ length: TESTIMONIALS[testimonialIndex].rating }).map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-primary fill-primary" />
+                  ))}
+                </div>
 
-                      {/* Quote */}
-                      <blockquote className="text-2xl md:text-3xl font-medium mb-10 leading-snug tracking-tight text-text-main text-wrap-pretty">
-                        {testimonial.content}
-                      </blockquote>
+                {/* Quote */}
+                <blockquote className="text-xl md:text-3xl font-medium mb-8 md:mb-10 leading-snug tracking-tight text-text-main text-wrap-pretty">
+                  {TESTIMONIALS[testimonialIndex].content}
+                </blockquote>
 
-                      {/* Client Profile */}
-                      <div className="flex items-center gap-4 pt-6 border-t border-fine">
-                        <img 
-                          alt={testimonial.name} 
-                          className="w-12 h-12 rounded-full object-cover grayscale" 
-                          src={testimonial.avatarUrl} 
-                          loading="lazy"
-                        />
-                        <div>
-                          <p className="font-bold text-text-main text-sm md:text-base">{testimonial.name}</p>
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface/40">{testimonial.role}</p>
-                        </div>
-                      </div>
-
-                    </div>
+                {/* Client Profile */}
+                <div className="flex items-center gap-4 pt-6 border-t border-fine">
+                  <img 
+                    alt={TESTIMONIALS[testimonialIndex].name} 
+                    className="w-12 h-12 rounded-full object-cover grayscale" 
+                    src={TESTIMONIALS[testimonialIndex].avatarUrl} 
+                    loading="lazy"
+                  />
+                  <div>
+                    <p className="font-bold text-text-main text-sm md:text-base">{TESTIMONIALS[testimonialIndex].name}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface/40">{TESTIMONIALS[testimonialIndex].role}</p>
                   </div>
-                );
-              })}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -651,12 +675,12 @@ function App() {
         <section 
           ref={journalRef}
           id="journal" 
-          className={`py-24 md:py-32 bg-surface border-t border-fine reveal ${journalVisible ? 'active' : ''}`}
+          className={`py-16 sm:py-24 md:py-32 bg-surface border-t border-fine reveal ${journalVisible ? 'active' : ''}`}
         >
-          <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center mb-16 md:mb-24">
               <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4 text-primary">Our Journal</p>
-              <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display uppercase tracking-tighter mb-4 text-text-main">
+              <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold font-display uppercase tracking-tighter mb-4 text-text-main">
                 The <span className="font-serif-display italic font-light text-primary normal-case">studio</span> journal
               </h2>
               <div className="w-16 h-0.5 bg-primary mx-auto" />
@@ -664,9 +688,10 @@ function App() {
 
             <div className="grid gap-10 max-w-5xl mx-auto">
               {ARTICLES.map((article) => (
-                <article 
+                <button 
                   key={article.id} 
-                  className="group flex flex-col md:flex-row items-center gap-8 md:gap-12 pb-10 border-b border-fine hover:border-primary/20 transition-colors duration-500 cursor-pointer"
+                  type="button"
+                  className="group flex flex-col md:flex-row items-center gap-8 md:gap-12 pb-10 border-b border-fine hover:border-primary/20 transition-colors duration-500 cursor-pointer text-left w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
                   onClick={() => setIsContactOpen(true)}
                 >
                   <div className="w-full md:w-2/5 aspect-[3/2] overflow-hidden rounded-2xl bg-surface-container shadow-sm">
@@ -688,7 +713,7 @@ function App() {
                       Read more <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
-                </article>
+                </button>
               ))}
             </div>
           </div>
@@ -697,7 +722,7 @@ function App() {
         {/* --- FOOTER CTA SECTION --- */}
         <section 
           ref={ctaRef}
-          className={`py-24 md:py-32 bg-text-main text-white mx-4 md:mx-6 rounded-[2.5rem] md:rounded-[4rem] mb-12 relative overflow-hidden reveal ${ctaVisible ? 'active' : ''}`}
+          className={`py-16 sm:py-24 md:py-32 bg-text-main text-white mx-4 md:mx-6 rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[4rem] mb-12 relative overflow-hidden reveal ${ctaVisible ? 'active' : ''}`}
         >
           {/* Parallax Background Text */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] opacity-[0.03] pointer-events-none">
@@ -709,9 +734,9 @@ function App() {
             </span>
           </div>
 
-          <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center relative z-10">
             <p className="text-xs font-bold uppercase tracking-[0.3em] mb-8 text-white/50">Ready to tackle your project?</p>
-            <h2 className="text-4xl sm:text-6xl md:text-[95px] font-bold mb-10 md:mb-14 tracking-tighter leading-[0.9] font-display uppercase text-wrap-balance">
+            <h2 className="text-4xl sm:text-6xl lg:text-7xl xl:text-[95px] font-bold mb-10 md:mb-14 tracking-tighter leading-[0.9] font-display uppercase text-wrap-balance">
               Let's <span className="italic font-serif-display font-light text-primary normal-case">make it</span> <br className="hidden md:inline" /> happen together.
             </h2>
             <button 
@@ -737,14 +762,14 @@ function App() {
                   href="#"
                   aria-label="Follow us on Twitter"
                 >
-                  <svg className="w-4.5 h-4.5 fill-current" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
                 </a>
                 <a 
                   className="btn-click-scale w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" 
                   href="#"
                   aria-label="Follow us on Instagram"
                 >
-                  <svg className="w-4.5 h-4.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204 0.013-3.583 0.07-4.849 0.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259 0.014 3.668 0.072 4.948 0.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98 0.059-1.28 0.073-1.689 0.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s0.645 1.44 1.441 1.44c0.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204 0.013-3.583 0.07-4.849 0.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259 0.014 3.668 0.072 4.948 0.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98 0.059-1.28 0.073-1.689 0.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s0.645 1.44 1.441 1.44c0.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
                 </a>
               </div>
             </div>
@@ -756,7 +781,7 @@ function App() {
           ref={footerRef}
           className={`py-12 border-t border-fine bg-surface reveal ${footerVisible ? 'active' : ''}`}
         >
-          <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-[10px] font-bold uppercase tracking-[0.25em] text-on-surface/40 gap-6 text-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center text-[10px] font-bold uppercase tracking-[0.25em] text-on-surface/40 gap-6 text-center">
             <p>© 2024 Velis Studio. All rights reserved.</p>
             <div className="flex gap-8 md:gap-12">
               <a className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:underline" href="#">Privacy Policy</a>
@@ -776,7 +801,7 @@ function App() {
             onClick={() => setIsContactOpen(false)}
           />
           <div 
-            className="bg-white rounded-[2rem] w-full max-w-lg p-8 md:p-10 shadow-2xl relative z-10 border border-black/5 animate-scaleIn"
+            className="bg-white rounded-[2rem] w-full max-w-lg p-6 md:p-10 shadow-2xl relative z-10 border border-black/5 max-h-[90vh] overflow-y-auto animate-fade-in"
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-title"

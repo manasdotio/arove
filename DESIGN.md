@@ -50,10 +50,9 @@ We use three primary font families to build depth and contrast:
 
 ## 3. Spacing & Layout
 
-- **Max Width:** `1440px` (`max-w-7xl` or `max-w-container-max`)
-- **Section Gap:** `160px` (`py-40` or standard margins between major sections)
-- **Margin Desktop:** `80px`
-- **Margin Mobile:** `24px`
+- **Max Width:** `1440px` (`max-w-7xl` or standard wrapper)
+- **Section Spacing (Vertical):** Responsive padding `py-16 sm:py-24 md:py-32` to tighten vertical flow on mobile while keeping it airy on desktop.
+- **Horizontal Margins (Containers):** Responsive padding `px-4 sm:px-6` (16px on mobile, 24px on desktop) to maximize text and element layouts on small viewports.
 - **Fine Borders:** Subtle translucent black borders (`border-black/5` or `rgba(0, 0, 0, 0.08)`)
 
 ---
