@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   ArrowRight, ArrowDown, Play, Star,
   ChevronLeft, ChevronRight, BarChart3, Zap,
@@ -127,11 +128,11 @@ export default function HomeClient() {
             className="relative group max-w-6xl mx-auto rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-xl bg-surface-dim stagger-item animate-float transition-all duration-700"
             style={{ transitionDelay: '500ms' }}
           >
-            <img
+            <Image
               alt="3D Abstract Render Art"
               width={1152}
               height={680}
-              fetchPriority="high"
+              priority
               className="w-full h-[350px] sm:h-[500px] md:h-[680px] object-cover scale-102 group-hover:scale-105 transition-transform duration-[1200ms] ease-out"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl0Dyk8gL5eLWyKIbsKbPCC5TN3uiQ3vyZzCJeNb_RZmPLWJOkXEeTNC8Vz2t4lXkSWEhf1oQ1kApoLGnrSp7jYEgo7l1yGPTKPIwLI1KEUXX1yhUcvLRo0I99rSmi_MB74JUFlMs7fho8zsV_JD3DfXvOjqXLE44F1gClNzCmhLeYgdCpYMjH1pDfgVCalo7Lu7AaoankhdB-Jywk8ZxUUlab0YgipSHunvCNt5fNA0fHEI7UkO8QVprn2Q14bLt7iKDnOnUFZS9g"
             />
@@ -147,7 +148,7 @@ export default function HomeClient() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-24">
           <div className="max-w-xl">
             <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4 text-primary">Selected Work</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tighter leading-[0.95] font-display uppercase text-text-main text-wrap-balance">
+            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tighter leading-[0.95] font-display uppercase text-text-main text-balance">
               Our Latest <br />
               <span className="font-serif-display italic font-light text-primary normal-case">Creations</span>
             </h2>
@@ -195,7 +196,7 @@ export default function HomeClient() {
             </div>
           </div>
           <div ref={videoTiltRef} className="relative bg-surface-container-high rounded-[2rem] md:rounded-[3rem] p-1.5 aspect-video lg:aspect-square overflow-hidden group shadow-md">
-            <img
+            <Image
               alt="Our Creative Studio Culture"
               width={800}
               height={800}
@@ -221,7 +222,7 @@ export default function HomeClient() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
           <div className="lg:col-span-5">
             <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4 text-primary">How We Work</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display uppercase tracking-tighter mb-6 text-text-main text-wrap-balance leading-[0.95]">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display uppercase tracking-tighter mb-6 text-text-main text-balance leading-[0.95]">
               Our structured <br />
               <span className="font-serif-display italic font-light text-primary normal-case">creative</span> roadmap
             </h2>
@@ -408,7 +409,7 @@ export default function HomeClient() {
               </div>
               <blockquote className="text-xl md:text-3xl font-medium mb-6 md:mb-10 leading-snug tracking-tight text-text-main text-wrap-pretty">{TESTIMONIALS[testimonialIndex].content}</blockquote>
               <div className="flex items-center gap-4 pt-4 md:pt-6 border-t border-fine">
-                <img
+                <Image
                   alt={TESTIMONIALS[testimonialIndex].name}
                   width={48}
                   height={48}
@@ -451,7 +452,7 @@ export default function HomeClient() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
           <div className="lg:col-span-5">
             <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4 text-primary">Got Questions?</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display uppercase tracking-tighter mb-6 text-text-main text-wrap-balance leading-[0.95]">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display uppercase tracking-tighter mb-6 text-text-main text-balance leading-[0.95]">
               Frequently <br />Asked <br />
               <span className="font-serif-display italic font-light text-primary normal-case">Questions</span>
             </h2>

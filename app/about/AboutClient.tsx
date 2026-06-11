@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { Play, ChevronDown, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useCardTilt } from '@/hooks/useCardTilt';
@@ -65,11 +66,11 @@ export default function AboutClient() {
             ref={videoTiltRef}
             className="relative bg-surface-container-high rounded-[2rem] md:rounded-[3rem] p-1.5 aspect-video lg:aspect-square overflow-hidden group shadow-md"
           >
-            <img
+            <Image
               alt="Our Creative Studio Culture"
               width={800}
               height={800}
-              fetchPriority="high"
+              priority
               className="w-full h-full object-cover rounded-[1.8rem] md:rounded-[2.8rem] group-hover:scale-102 transition-transform duration-[1000ms] grayscale group-hover:grayscale-0"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4CNQwqUntuHEpcx7ATrdQ086c2eVWqa1oV-IsdL23fk3pYWc-WEkqY0DfOFxM6rbL3QSbviAE7QEpQIAbcLayTuv__8OxIUJeZ5h7haVH9vmcGWgXv6sse0Kc-00m9_NqZYIjilAflD1GsdhXB022-2ekAMu2RYLJtENeX1mm3Z2WhqKePIarLXUFY_A-fN2C-LTevckQscYz5jecZRf3vWot5SCSG4niLLprerKXr8Hdq9H945Gtq6pYPmuVLFAcS21iq5n7KsNk"
             />
@@ -137,7 +138,7 @@ export default function AboutClient() {
                 {TESTIMONIALS[testimonialIndex].content}
               </blockquote>
               <div className="flex items-center gap-4 pt-4 md:pt-6 border-t border-fine">
-                <img
+                <Image
                   alt={TESTIMONIALS[testimonialIndex].name}
                   width={48}
                   height={48}
@@ -166,7 +167,7 @@ export default function AboutClient() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
           <div className="lg:col-span-5">
             <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4 text-primary">Got Questions?</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display uppercase tracking-tighter mb-6 text-text-main text-wrap-balance leading-[0.95]">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display uppercase tracking-tighter mb-6 text-text-main text-balance leading-[0.95]">
               Frequently <br />
               Asked <br />
               <span className="font-serif-display italic font-light text-primary normal-case">Questions</span>

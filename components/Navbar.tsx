@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Sun, Moon, Monitor } from 'lucide-react';
+import { Menu, X, Sun, Moon, Monitor, Sparkles } from 'lucide-react';
 import { useMagnetic } from '@/hooks/useMagnetic';
 import { useModal } from '@/components/ModalProvider';
 
@@ -102,10 +102,9 @@ export function Navbar() {
             : 'bg-surface-container-low/40 backdrop-blur-sm shadow-none'
         }`}>
 
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded-lg">
             <span className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white" aria-hidden="true">
-              <span className="material-symbols-outlined text-[15px] select-none font-bold">bubble_chart</span>
+              <Sparkles className="w-3.5 h-3.5 fill-current" />
             </span>
             <span className="font-bold text-lg tracking-tight font-display text-text-main">Velis Studio.</span>
           </Link>
@@ -134,7 +133,7 @@ export function Navbar() {
             <div className="relative flex items-center" ref={themeDropdownRef}>
               <button
                 onClick={() => setIsThemeDropdownOpen(!isThemeDropdownOpen)}
-                className="p-2.5 rounded-full hover:bg-on-surface/5 border border-fine transition-all duration-300 flex items-center justify-center text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+                className="w-11 h-11 rounded-full hover:bg-on-surface/5 border border-fine transition-all duration-300 flex items-center justify-center text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
                 aria-label="Change theme"
                 aria-haspopup="true"
                 aria-expanded={isThemeDropdownOpen}
@@ -179,7 +178,7 @@ export function Navbar() {
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 md:hidden hover:bg-on-surface/5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="w-11 h-11 flex items-center justify-center md:hidden hover:bg-on-surface/5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
             >
@@ -198,7 +197,7 @@ export function Navbar() {
               <span className="font-bold text-xl tracking-tight font-display text-text-main">Velis Studio.</span>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2.5 hover:bg-on-surface/5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+                className="w-11 h-11 flex items-center justify-center hover:bg-on-surface/5 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
                 aria-label="Close menu"
               >
                 <X className="w-6 h-6" aria-hidden="true" />

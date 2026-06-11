@@ -20,7 +20,7 @@ export default function WorkClient() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-24 gap-6">
           <div className="max-w-xl">
             <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4 text-primary">Selected Portfolio</p>
-            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-bold tracking-tighter leading-[0.95] font-display uppercase text-text-main text-wrap-balance">
+            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-bold tracking-tighter leading-[0.95] font-display uppercase text-text-main text-balance">
               Our Digital <br />
               <span className="font-serif-display italic font-light text-primary normal-case">Creations</span>
             </h1>

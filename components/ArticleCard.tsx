@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useCardTilt } from '@/hooks/useCardTilt';
 import { ArrowRight } from 'lucide-react';
 import type { Article } from '@/lib/constants';
@@ -25,7 +26,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onClick, vari
           {article.category} • {article.date}
         </p>
 
-        <h3 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold uppercase mb-6 md:mb-8 text-text-main group-hover:text-primary transition-colors duration-300 leading-[0.95] tracking-tighter text-wrap-balance">
+        <h3 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold uppercase mb-6 md:mb-8 text-text-main group-hover:text-primary transition-colors duration-300 leading-[0.95] tracking-tighter text-balance">
           {article.title}
         </h3>
 
@@ -33,7 +34,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onClick, vari
           ref={imageTiltRef}
           className="w-full aspect-[3/2] md:aspect-[21/9] overflow-hidden rounded-[2rem] bg-surface-container shadow-sm relative transition-all duration-700 ease-out mb-6 md:mb-8"
         >
-          <img
+          <Image
             alt={article.title}
             width={1050}
             height={450}
@@ -63,7 +64,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onClick, vari
         ref={imageTiltRef}
         className="w-full md:w-2/5 aspect-[3/2] overflow-hidden rounded-2xl bg-surface-container shadow-sm relative transition-all duration-700 ease-out"
       >
-        <img
+        <Image
           alt={article.title}
           width={600}
           height={400}

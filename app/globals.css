@@ -21,9 +21,9 @@
   --color-background: #F0EBE6;
   --color-text-main: #2D2926;
 
-  --font-sans: "Manrope", sans-serif;
-  --font-display: "Archivo Narrow", sans-serif;
-  --font-serif-display: "Instrument Serif", serif;
+  --font-sans: var(--font-manrope), sans-serif;
+  --font-display: var(--font-archivo-narrow), sans-serif;
+  --font-serif-display: var(--font-instrument-serif), serif;
 }
 
 @utility text-display-xl {

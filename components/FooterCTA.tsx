@@ -42,7 +42,7 @@ export const FooterCTA: React.FC<FooterCTAProps> = ({ onStartProjectClick }) => 
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center relative z-10">
         <p className="text-xs font-bold uppercase tracking-[0.3em] mb-6 text-white/50">Ready to tackle your project?</p>
-        <h2 className="text-4xl sm:text-6xl lg:text-7xl xl:text-[95px] font-bold mb-6 md:mb-14 tracking-tighter leading-[0.9] font-display uppercase text-wrap-balance">
+        <h2 className="text-4xl sm:text-6xl lg:text-7xl xl:text-[95px] font-bold mb-6 md:mb-14 tracking-tighter leading-[0.9] font-display uppercase text-balance">
           Let’s <span className="italic font-serif-display font-light text-primary normal-case">make it</span>{' '}
           <br className="hidden md:inline" /> happen together.
         </h2>

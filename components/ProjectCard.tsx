@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useCardTilt } from '@/hooks/useCardTilt';
 import type { Project } from '@/lib/constants';
 
@@ -38,7 +39,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           isFeatured ? 'aspect-[3/2] md:aspect-[2/1]' : 'aspect-[3/2]'
         }`}
       >
-        <img
+        <Image
           alt={project.title}
           width={600}
           height={400}
