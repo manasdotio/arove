@@ -1,0 +1,109 @@
+@import "tailwindcss";
+@source not "../.agents";
+
+@theme {
+  --color-primary: #B35C44;
+  --color-on-primary: #ffffff;
+  --color-surface: #fbf9f9;
+  --color-surface-dim: #dbdad9;
+  --color-surface-bright: #fbf9f9;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f5f3f3;
+  --color-surface-container: #efeded;
+  --color-surface-container-high: #e9e8e7;
+  --color-surface-container-highest: #e4e2e2;
+  --color-on-surface: #1b1c1c;
+  --color-outline: #7e7576;
+  --color-outline-variant: #cfc4c5;
+  --color-background: #fbf9f9;
+  --color-text-main: #2D2926;
+
+  --font-sans: "Manrope", sans-serif;
+  --font-display: "Archivo Narrow", sans-serif;
+  --font-serif-display: "Instrument Serif", serif;
+}
+
+@utility text-display-xl {
+  font-size: 120px;
+  line-height: 110px;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+}
+
+@utility text-display-lg {
+  font-size: 80px;
+  line-height: 84px;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+@utility text-headline-lg {
+  font-size: 48px;
+  line-height: 52px;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+@utility border-fine {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s cubic-bezier(0.21, 0.45, 0.32, 0.9), transform 1.2s cubic-bezier(0.21, 0.45, 0.32, 0.9);
+    will-change: transform, opacity;
+  }
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .stagger-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  .reveal.active .stagger-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(1deg); }
+  }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .btn-magnetic {
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  .btn-click-scale:active {
+    transform: scale(0.95);
+  }
+
+  .parallax-bg {
+    will-change: transform;
+  }
+}
