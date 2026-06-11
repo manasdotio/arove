@@ -141,6 +141,9 @@ function App() {
   const [isInlineSubmitting, setIsInlineSubmitting] = useState(false);
   const [inlineSubmitSuccess, setInlineSubmitSuccess] = useState(false);
 
+  // Navbar Scroll State
+  const [isScrolled, setIsScrolled] = useState(false);
+
   // --- REVEAL REFERENCES (Scroll animations) ---
   const [headerRef, headerVisible] = useIntersectionObserver();
   const [projectsRef, projectsVisible] = useIntersectionObserver();
@@ -184,6 +187,17 @@ function App() {
       document.body.style.overflow = '';
     };
   }, [isMobileMenuOpen, isContactOpen, isVideoOpen]);
+
+  // Listen for scroll to toggle navbar styles
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Run once initially
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // --- HANDLERS ---
   const nextTestimonial = () => {
@@ -251,8 +265,12 @@ function App() {
       </a>
 
       {/* --- FLOATING HEADER / NAVIGATION --- */}
-      <nav className="fixed top-0 left-0 w-full z-40 px-4 py-3 sm:px-6 sm:py-4 transition-[background-color,backdrop-filter] duration-300">
-        <div className="max-w-7xl mx-auto flex justify-between items-center bg-white/80 dark:bg-black/50 backdrop-blur-xl border border-black/5 rounded-full px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 shadow-sm">
+      <nav className={`fixed top-0 left-0 w-full z-40 px-4 transition-all duration-300 ${isScrolled ? 'py-2 sm:py-3' : 'py-4 sm:py-5'}`}>
+        <div className={`max-w-7xl mx-auto flex justify-between items-center rounded-full px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 border border-black/5 transition-all duration-300 ${
+          isScrolled 
+            ? 'bg-surface/90 backdrop-blur-md shadow-md' 
+            : 'bg-white/40 backdrop-blur-sm shadow-none'
+        }`}>
           
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded-lg">
