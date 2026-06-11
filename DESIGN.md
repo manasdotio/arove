@@ -12,14 +12,14 @@ The color system is designed around warm, natural tones: a primary Terracotta, p
 | :--- | :--- | :--- |
 | **Primary (Terracotta)** | `--color-primary` / `#B35C44` | Brand highlights, primary call-to-actions, active links |
 | **On Primary** | `--color-on-primary` / `#FFFFFF` | Text color on primary background elements |
-| **Background / Surface** | `--color-background` / `#FBF9F9` | Default background color of the body and sections |
-| **Surface Dim** | `--color-surface-dim` / `#DBDAD9` | Muted background surfaces |
-| **Surface Bright** | `--color-surface-bright` / `#FBF9F9` | Clean, highlighted surfaces |
-| **Surface Container Lowest** | `--color-surface-lowest` / `#FFFFFF` | Darker surfaces (low elevation container) |
-| **Surface Container Low** | `--color-surface-low` / `#F5F3F3` | Cards and section containers |
-| **Surface Container** | `--color-surface-container` / `#EFEDED` | Intermediate container backdrop |
-| **Surface Container High** | `--color-surface-high` / `#E9E8E7` | Higher elevation backdrops |
-| **Surface Container Highest** | `--color-surface-highest` / `#E4E2E2` | Accent border and outline-variant colors |
+| **Background / Surface** | `--color-background` / `#F0EBE6` | Default background color of the body and sections |
+| **Surface Dim** | `--color-surface-dim` / `#D0CBC6` | Muted background surfaces |
+| **Surface Bright** | `--color-surface-bright` / `#F0EBE6` | Clean, highlighted surfaces |
+| **Surface Container Lowest** | `--color-surface-container-lowest` / `#FFFFFF` | Lightest surfaces (lowest elevation container) |
+| **Surface Container Low** | `--color-surface-container-low` / `#EAE5E0` | Cards and section containers |
+| **Surface Container** | `--color-surface-container` / `#E4DFDA` | Intermediate container backdrop |
+| **Surface Container High** | `--color-surface-container-high` / `#DED9D4` | Higher elevation backdrops |
+| **Surface Container Highest** | `--color-surface-container-highest` / `#D8D3CE` | Accent border and outline-variant colors |
 | **On Surface** | `--color-on-surface` / `#1B1C1C` | Primary body text and headers |
 | **Outline** | `--color-outline` / `#7E7576` | Fine borders and borders |
 | **Outline Variant** | `--color-outline-variant` / `#CFC4C5` | Subtle borders and decorative dividers |
@@ -51,9 +51,10 @@ We use three primary font families to build depth and contrast:
 ## 3. Spacing & Layout
 
 - **Max Width:** `1440px` (`max-w-7xl` or standard wrapper)
-- **Section Spacing (Vertical):** Responsive padding `py-16 sm:py-24 md:py-32` to tighten vertical flow on mobile while keeping it airy on desktop.
+- **Section Spacing (Vertical):** Responsive padding `py-12 sm:py-20 md:py-32` to tighten vertical flow on mobile while keeping it airy on desktop.
 - **Horizontal Margins (Containers):** Responsive padding `px-4 sm:px-6` (16px on mobile, 24px on desktop) to maximize text and element layouts on small viewports.
 - **Fine Borders:** Subtle translucent black borders (`border-black/5` or `rgba(0, 0, 0, 0.08)`)
+- **Asymmetric Portfolio Grid:** The projects page uses an alternating asymmetric layout where every third project (starting with the first) spans the full width of the grid (`col-span-2`) with a cinematic widescreen aspect ratio (`aspect-[2/1]`) on desktop, while other projects are aligned side-by-side in balanced columns.
 
 ---
 
@@ -66,4 +67,28 @@ Following the Vercel Web Interface Guidelines, animations are kept subtle, polis
 3. **Explicit Transitions:** No `transition-all`. List transit properties explicitly (e.g., `transition-[transform,opacity,background-color]`).
 4. **Reduced Motion Support:** All interactive transitions and entrance animations must respond to media query `prefers-reduced-motion: reduce` by reverting to static displays or simple fading.
 5. **Focus States:** Every button and interactive link must use a highly visible, custom focus indicator (e.g., `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50`).
-6. **Cards & Buttons:** Cards lift slightly (`group-hover:-translate-y-2 group-hover:shadow-lg transition-transform duration-500`). Buttons scale slightly on click (`active:scale-98`).
+6. **Cards & Buttons:** Cards lift and rotate slightly via a custom 3D tilt effect on hover (`rotateX` and `rotateY` coordinates calculated relative to cursor position in `useCardTilt`). Buttons scale slightly on click (`active:scale-98`).
+7. **Accordions & Disclosures:** Roadmap and FAQ items expand using CSS Grid transitions (`grid-rows-[0fr]` to `grid-rows-[1fr]`) to animate their height smoothly without hardcoding heights or breaking container layouts.
+8. **Budget & Service Planner:** Interactive multiselect tags and budget options update a live, compiling sentence preview describing the user's inquiry text in real-time.
+
+---
+
+## 5. Multi-Page Architecture & SEO Setup
+
+To optimize for search engine crawling and performance, the application has been restructured into a multi-page routing architecture utilizing `react-router-dom` and a dynamic meta-tag injector:
+
+1. **Routing Setup:**
+   - **Home (`/`):** [Home.tsx](file:///home/manas/projects/arove/src/pages/Home.tsx) contains the hero presentation, selected case study teasers, expertise grids, testimonials, and global booking CTAs.
+   - **Work (`/work`):** [Work.tsx](file:///home/manas/projects/arove/src/pages/Work.tsx) presents the full creations list of Velis Studio's portfolio.
+   - **Services (`/services`):** [Services.tsx](file:///home/manas/projects/arove/src/pages/Services.tsx) houses detailed service highlights, process roadmap phases, and the interactive budget planner.
+   - **About (`/about`):** [About.tsx](file:///home/manas/projects/arove/src/pages/About.tsx) outlines studio stats, creative showreels, client testimonials, and the FAQ accordion.
+   - **Journal (`/journal`):** [Journal.tsx](file:///home/manas/projects/arove/src/pages/Journal.tsx) hosts article reviews, blog entries, design trends, and local marketing tips. The page is designed with a massive, left-aligned typography header (`text-[110px]` on desktop) and renders articles as large, widescreen vertical cards with huge headlines (`text-6xl`) and wide-angle `aspect-[21/9]` images.
+   - **Contact (`/contact`):** [Contact.tsx](file:///home/manas/projects/arove/src/pages/Contact.tsx) provides a full-page custom booking form, direct email links, office address, and support hours.
+
+2. **SEO Integration:**
+   - The dynamic [SEO.tsx](file:///home/manas/projects/arove/src/components/SEO.tsx) component updates the page title, description tag, and canonical link in the `<head>` dynamically on every path transition, ensuring that crawler index bots map the page's metadata accurately.
+
+3. **Navbar & Legibility Refinements:**
+   - **Essential Links Only:** Unnecessary secondary blocks (Process, FAQ) have been removed from the top-level menu. The primary navigation contains: Home, Work, About, Journal, and Contact.
+   - **High-Contrast Typography:** Font size is increased to `text-[13px]`, with `font-bold` and high-contrast `text-text-main` styling (deep off-black `#2D2926` in light mode, clean off-white `#f5f0eb` in dark mode) for maximum legibility.
+   - **Persisted Active Indicators:** Standard underlines persist on active menu targets using the `.nav-link.active::after` selector, colored in brand Terracotta (`text-primary`).

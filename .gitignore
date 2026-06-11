@@ -26,3 +26,12 @@ dist-ssr
 # Agent skills
 .agents/
 skills-lock.json
+
+# Next.js
+.next/
+out/
+build/
+.env*.local
+*.bak
+
+

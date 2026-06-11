@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @source not "../.agents";
+@source not "../src";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -11,7 +12,7 @@
   --color-surface-bright: #F0EBE6;
   --color-surface-container-lowest: #ffffff;
   --color-surface-container-low: #EAE5E0;
-  --color-surface-container: #E4DFDA;
+  --color-surface: #E4DFDA;
   --color-surface-container-high: #DED9D4;
   --color-surface-container-highest: #D8D3CE;
   --color-on-surface: #1b1c1c;
@@ -61,7 +62,7 @@
     opacity: 1;
     transform: translateY(0);
   }
-  
+
   .stagger-item {
     opacity: 0;
     transform: translateY(20px);
@@ -71,7 +72,7 @@
     opacity: 1;
     transform: translateY(0);
   }
-  
+
   @keyframes float {
     0%, 100% { transform: translateY(0) rotate(0deg); }
     50% { transform: translateY(-15px) rotate(1deg); }
@@ -79,11 +80,11 @@
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
-  
+
   .btn-magnetic {
     transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   }
-  
+
   .nav-link {
     position: relative;
   }
@@ -101,7 +102,7 @@
   .nav-link.active::after {
     width: 100%;
   }
-  
+
   .btn-click-scale:active {
     transform: scale(0.95);
   }
@@ -196,5 +197,3 @@
     transparent 60%
   );
 }
-
-
