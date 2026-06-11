@@ -136,14 +136,19 @@ function App() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
+  // Inline Contact Form State
+  const [inlineFormData, setInlineFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [isInlineSubmitting, setIsInlineSubmitting] = useState(false);
+  const [inlineSubmitSuccess, setInlineSubmitSuccess] = useState(false);
+
   // --- REVEAL REFERENCES (Scroll animations) ---
   const [headerRef, headerVisible] = useIntersectionObserver();
-  const [tickerRef, tickerVisible] = useIntersectionObserver();
   const [projectsRef, projectsVisible] = useIntersectionObserver();
   const [aboutRef, aboutVisible] = useIntersectionObserver();
   const [servicesRef, servicesVisible] = useIntersectionObserver();
   const [testimonialsRef, testimonialsVisible] = useIntersectionObserver();
   const [journalRef, journalVisible] = useIntersectionObserver();
+  const [contactRef, contactVisible] = useIntersectionObserver();
   const [ctaRef, ctaVisible] = useIntersectionObserver();
   const [footerRef, footerVisible] = useIntersectionObserver();
 
@@ -209,6 +214,25 @@ function App() {
     }, 1500);
   };
 
+  const handleInlineInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setInlineFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleInlineFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsInlineSubmitting(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsInlineSubmitting(false);
+      setInlineSubmitSuccess(true);
+      setTimeout(() => {
+        setInlineSubmitSuccess(false);
+        setInlineFormData({ name: '', email: '', subject: '', message: '' });
+      }, 3000);
+    }, 1500);
+  };
+
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
@@ -245,7 +269,7 @@ function App() {
             <a onClick={(e) => scrollToSection(e, 'projects')} className="nav-link hover:text-primary transition-colors focus-visible:outline-none focus-visible:underline" href="#projects">Work</a>
             <a onClick={(e) => scrollToSection(e, 'services')} className="nav-link hover:text-primary transition-colors focus-visible:outline-none focus-visible:underline" href="#services">Services</a>
             <a onClick={(e) => scrollToSection(e, 'journal')} className="nav-link hover:text-primary transition-colors focus-visible:outline-none focus-visible:underline" href="#journal">Journal</a>
-            <a onClick={(e) => scrollToSection(e, 'testimonials')} className="nav-link hover:text-primary transition-colors focus-visible:outline-none focus-visible:underline" href="#testimonials">Notes</a>
+            <a onClick={(e) => scrollToSection(e, 'contact')} className="nav-link hover:text-primary transition-colors focus-visible:outline-none focus-visible:underline" href="#contact">Contact</a>
           </div>
 
           {/* CTA & Mobile Toggle */}
@@ -291,7 +315,7 @@ function App() {
               <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'projects'); }} href="#projects" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Work</a>
               <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'services'); }} href="#services" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Services</a>
               <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'journal'); }} href="#journal" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Journal</a>
-              <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'testimonials'); }} href="#testimonials" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Notes</a>
+              <a onClick={(e) => { setIsMobileMenuOpen(false); scrollToSection(e, 'contact'); }} href="#contact" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">Contact</a>
             </div>
 
             <button 
@@ -371,25 +395,6 @@ function App() {
 
           </div>
         </header>
-
-        {/* --- LOGO TICKER SECTION --- */}
-        <section 
-          ref={tickerRef}
-          className={`py-12 md:py-16 border-y border-fine bg-white/40 reveal ${tickerVisible ? 'active' : ''}`}
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <h2 className="text-center text-[10px] font-bold uppercase tracking-[0.3em] mb-10 text-on-surface/40">
-              The company we keep
-            </h2>
-            <div className="flex flex-wrap justify-center md:justify-between items-center gap-6 sm:gap-8 md:gap-12 grayscale opacity-45 hover:opacity-85 transition-opacity duration-300">
-              <div className="flex items-center gap-2 font-display font-bold text-xl md:text-2xl tracking-tighter uppercase select-none">TRACE</div>
-              <div className="flex items-center gap-2 font-display font-bold text-xl md:text-2xl tracking-tighter italic uppercase select-none">DENMARK</div>
-              <div className="flex items-center gap-2 font-display font-bold text-xl md:text-2xl tracking-tighter uppercase underline decoration-primary decoration-2 underline-offset-4 select-none">PROLINE</div>
-              <div className="flex items-center gap-2 font-display font-bold text-xl md:text-2xl tracking-tighter uppercase select-none">HITECH</div>
-              <div className="flex items-center gap-2 font-display font-bold text-xl md:text-2xl tracking-tighter uppercase select-none">FLUX</div>
-            </div>
-          </div>
-        </section>
 
         {/* --- WORK / PROJECTS SECTION --- */}
         <section 
@@ -715,6 +720,166 @@ function App() {
                   </div>
                 </button>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* --- CONTACT US SECTION --- */}
+        <section 
+          ref={contactRef}
+          id="contact" 
+          className={`py-16 sm:py-24 md:py-32 bg-white border-t border-fine reveal ${contactVisible ? 'active' : ''}`}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
+              
+              {/* Left Column: Direct Info */}
+              <div className="lg:col-span-5 flex flex-col justify-between">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.3em] mb-4 text-primary">Get In Touch</p>
+                  <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-display uppercase tracking-tighter mb-6 text-text-main">
+                    Let's create <br />
+                    <span className="font-serif-display italic font-light text-primary normal-case">something new</span> <br />
+                    together.
+                  </h2>
+                  <p className="text-sm md:text-base text-on-surface/65 mb-8 leading-relaxed max-w-md">
+                    Have an idea, a rebranding project, or a digital platform you want to build? Tell us about it, and we will get back to you within 24 hours.
+                  </p>
+                </div>
+                
+                <div className="space-y-6 pt-6 border-t border-fine mt-6 lg:mt-0">
+                  <div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-1">Email us</h4>
+                    <a href="mailto:hello@velisstudio.com" className="text-base font-bold text-text-main hover:text-primary transition-colors focus-visible:outline-none focus-visible:underline">
+                      hello@velisstudio.com
+                    </a>
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-1">Our Office</h4>
+                    <p className="text-sm font-medium text-text-main leading-relaxed">
+                      Søndergade 14, 1. sal<br />
+                      8000 Aarhus C, Denmark
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface/40 mb-1">Business Hours</h4>
+                    <p className="text-sm font-medium text-text-main">
+                      Mon – Fri: 9:00 AM – 5:00 PM CET
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Contact Form */}
+              <div className="lg:col-span-7 bg-surface-container-low/40 p-6 sm:p-10 rounded-[2rem] border border-fine">
+                {inlineSubmitSuccess ? (
+                  <div className="py-16 text-center flex flex-col items-center justify-center gap-4 animate-fade-in">
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                      <Check className="w-8 h-8" />
+                    </div>
+                    <h4 className="text-2xl font-display font-bold text-text-main uppercase tracking-tight">Message Received!</h4>
+                    <p className="text-sm text-on-surface/60 max-w-sm mx-auto leading-relaxed">
+                      Thank you for reaching out. A partner from Velis Studio will contact you within 24 hours to schedule a discovery session.
+                    </p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleInlineFormSubmit} className="space-y-6">
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="inline-name-input" className="block text-xs font-bold uppercase tracking-widest text-on-surface/50 mb-2">
+                          Your Name
+                        </label>
+                        <input
+                          id="inline-name-input"
+                          type="text"
+                          name="name"
+                          required
+                          value={inlineFormData.name}
+                          onChange={handleInlineInputChange}
+                          placeholder="e.g. Alexander Cole"
+                          className="w-full bg-white border border-black/5 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 placeholder:text-on-surface/30 shadow-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="inline-email-input" className="block text-xs font-bold uppercase tracking-widest text-on-surface/50 mb-2">
+                          Email Address
+                        </label>
+                        <input
+                          id="inline-email-input"
+                          type="email"
+                          name="email"
+                          required
+                          spellCheck={false}
+                          value={inlineFormData.email}
+                          onChange={handleInlineInputChange}
+                          placeholder="e.g. alex@example.com"
+                          className="w-full bg-white border border-black/5 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 placeholder:text-on-surface/30 shadow-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="inline-subject-select" className="block text-xs font-bold uppercase tracking-widest text-on-surface/50 mb-2">
+                        What are we building?
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="inline-subject-select"
+                          name="subject"
+                          required
+                          value={inlineFormData.subject}
+                          onChange={handleInlineInputChange}
+                          className="w-full bg-white border border-black/5 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 text-on-surface/80 appearance-none shadow-sm cursor-pointer"
+                        >
+                          <option value="" disabled>Select a project type…</option>
+                          <option value="brand">Brand Identity & Strategy</option>
+                          <option value="digital">Web & Mobile Experience</option>
+                          <option value="production">Digital Production</option>
+                          <option value="other">Other Creative Work</option>
+                        </select>
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface/40">
+                          <span className="material-symbols-outlined text-[18px] font-bold select-none">keyboard_arrow_down</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="inline-message-input" className="block text-xs font-bold uppercase tracking-widest text-on-surface/50 mb-2">
+                        Project Brief & Details
+                      </label>
+                      <textarea
+                        id="inline-message-input"
+                        name="message"
+                        required
+                        rows={5}
+                        value={inlineFormData.message}
+                        onChange={handleInlineInputChange}
+                        placeholder="Tell us a little bit about your goals, budget, or timeline…"
+                        className="w-full bg-white border border-black/5 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 placeholder:text-on-surface/30 resize-none shadow-sm"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isInlineSubmitting}
+                      className="w-full bg-primary hover:bg-text-main text-white py-4 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors duration-300 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer shadow-md hover:shadow-lg"
+                    >
+                      {isInlineSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Sending Message…
+                        </>
+                      ) : (
+                        <>
+                          Send Inquiry <ArrowRight className="w-4 h-4" />
+                        </>
+                      )}
+                    </button>
+                  </form>
+                )}
+              </div>
+
             </div>
           </div>
         </section>
