@@ -423,16 +423,16 @@ function App() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-16 md:gap-y-28">
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-8 md:gap-y-16">
             {PROJECTS.map((project, idx) => (
               <button 
                 key={project.id} 
                 type="button"
-                className={`group cursor-pointer text-left w-full block rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 ${idx % 2 === 1 ? 'md:mt-24' : ''}`}
+                className={`group cursor-pointer text-left w-full block rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 ${idx % 2 === 1 ? 'md:mt-12' : ''}`}
                 onClick={() => setIsContactOpen(true)}
               >
                 {/* Project Image Frame */}
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] mb-6 md:mb-8 bg-surface-container shadow-sm group-hover:-translate-y-2 group-hover:shadow-xl transition-all duration-700 ease-out">
+                <div className="relative aspect-[3/2] overflow-hidden rounded-[2rem] mb-6 md:mb-8 bg-surface-container shadow-sm group-hover:-translate-y-2 group-hover:shadow-xl transition-all duration-700 ease-out">
                   <img 
                     alt={project.title} 
                     className="w-full h-full object-cover scale-102 group-hover:scale-105 transition-transform duration-[1200ms] grayscale group-hover:grayscale-0" 
